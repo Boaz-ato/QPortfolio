@@ -50,7 +50,7 @@ problem = PortfolioProblem.from_arrays(
 results = [
     RandomSampler(n_samples=2000, seed=0).solve(problem),
     WSMSolver(n_weights=50, seed=0).solve(problem),
-    NSGA2Solver(generations=50, pop_size=20, seed=0).solve(problem),
+    NSGA2Solver(n_generations=50, pop_size=20, seed=0).solve(problem),
 ]
 
 # Compare
