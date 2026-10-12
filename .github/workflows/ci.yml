@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Format, lint, typecheck
+  # ---------------------------------------------------------------------------
+  lint:
+    name: Format, lint & typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install lint dependencies
+        run: pip install ruff mypy pandas-stubs numpy
+
+      - name: ruff format check
+        run: ruff format --check src/ tests/
+
+      - name: ruff check
+        run: ruff check src/ tests/
+
+      - name: mypy
+        run: mypy src/qportfolio/ --ignore-missing-imports --no-error-summary
+
+  # ---------------------------------------------------------------------------
+  # All tests (classical + quantum) — Python 3.10, 3.11, 3.12
+  # ---------------------------------------------------------------------------
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package + all deps
+        run: pip install -e ".[dev,classical,quantum]"
+
+      - name: Run all tests
+        run: |
+          pytest tests/ \
+            -v --tb=short -q \
+            -m "not slow and not julia"
+
+  # ---------------------------------------------------------------------------
+  # Packaging sanity check
+  # ---------------------------------------------------------------------------
+  packaging:
+    name: Build & install from wheel
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build wheel
+        run: |
+          pip install build
+          python -m build --wheel
+
+      - name: Install wheel and verify import
+        run: |
+          pip install dist/*.whl
+          python -c "import qportfolio; print('version:', qportfolio.__version__)"
+
+  # ---------------------------------------------------------------------------
+  # Julia integration (optional — runs only when Julia is available)
+  # Disabled in default CI; enable by removing the 'if: false' guard.
+  # ---------------------------------------------------------------------------
+  julia:
+    name: Julia integration tests
+    runs-on: ubuntu-latest
+    if: false   # Enable once JuliQAOA adapter is fully validated
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: "1.10"
+
+      - name: Install package
+        run: pip install -e ".[dev,classical,quantum]"
+
+      - name: Run Julia tests
+        run: pytest tests/quantum/test_julia_trainer.py -v -m "julia"
