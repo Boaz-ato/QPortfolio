@@ -14,6 +14,7 @@ dependencies = [
     "yfinance>=0.2.40",
     "pyarrow>=14.0",  # for Parquet cache
     "pymoo>=0.6",
+    "tqdm>=4.60",
     "qiskit>=1.2",
     "qiskit-aer>=0.14",
     "juliacall>=0.9",
