@@ -1,0 +1,10 @@
+services:
+  qportfolio-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: qportfolio-dev
+    volumes:
+      - .:/opt/project
+    tty: true
+    command: bash -c "tail -f /dev/null"

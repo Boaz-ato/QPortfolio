@@ -1,0 +1,10 @@
+numpy>=1.26
+pandas>=2.1
+scipy>=1.12
+yfinance>=0.2.40
+pyarrow>=14.0
+pymoo>=0.6
+sympy
+tqdm
+qiskit>=1.2
+qiskit-aer>=0.14

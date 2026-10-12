@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "created": "2024-01-01",
+  "description": "Versioned pool of eligible US large-cap tickers distributed across 8 GICS sectors",
+  "sectors": {
+    "Technology": ["AAPL", "MSFT", "NVDA", "GOOGL", "META", "AVGO", "ORCL", "ADBE", "CRM", "AMD"],
+    "Healthcare": ["JNJ", "UNH", "LLY", "ABBV", "MRK", "TMO", "ABT", "DHR", "PFE", "AMGN"],
+    "Financials": ["BRK-B", "JPM", "V", "MA", "BAC", "WFC", "GS", "MS", "BLK", "AXP"],
+    "Consumer": ["AMZN", "TSLA", "HD", "MCD", "NKE", "SBUX", "TGT", "COST", "LOW", "BKNG"],
+    "Industrials": ["UPS", "HON", "CAT", "BA", "GE", "MMM", "RTX", "LMT", "DE", "FDX"],
+    "Energy": ["XOM", "CVX", "COP", "EOG", "SLB", "MPC", "VLO", "PSX", "OXY", "HAL"],
+    "Utilities": ["NEE", "DUK", "SO", "D", "AEP", "EXC", "SRE", "PCG", "ES", "AWK"],
+    "Materials": ["LIN", "APD", "ECL", "NEM", "FCX", "NUE", "VMC", "MLM", "PPG", "SHW"]
+  }
+}
