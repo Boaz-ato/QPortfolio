@@ -13,16 +13,13 @@ A research-grade Python library for **classical and quantum multi-objective port
 
 ## Installation
 
-```bash
-# Core (classical solvers, data pipeline)
-pip install -e ".[classical]"
+# Regular installation
+pip install git+https://github.com/Boaz-ato/QPortfolio.git
 
-# Classical + quantum (adds Qiskit + Aer MPS simulator)
-pip install -e ".[classical,quantum]"
-
-# Full development environment
-pip install -e ".[classical,quantum,dev]"
-```
+# Editable installation for developers
+git clone https://github.com/Boaz-ato/QPortfolio.git
+cd QPortfolio
+pip install -e ".[dev]"
 
 **Requirements:** Python >= 3.10, NumPy >= 1.26, pandas >= 2.1, SciPy >= 1.12.
 
